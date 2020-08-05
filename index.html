@@ -1,0 +1,48 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Javascript DOM exercises</title>
+    <script src="https://kit.fontawesome.com/8d3cb51f30.js" crossorigin="anonymous"></script>
+    <link rel="stylesheet" type="text/css" href="style.css" />
+  </head>
+  <body>
+    <div class="container">
+      <div class="side-form">
+        <form class="content-form" id="items-form">
+          <h4 class="title-form">Register products</h4>
+          <label>Product name</label>
+          <input class="input-product" type="text" />
+          <label>Product description</label>
+          <textarea class="area-description"></textarea>
+          <label>Quantity</label>
+          <input class="input-qtt" type="number" />
+          <label>Price</label>
+          <input class="input-price" type="number" />
+          <input class="btn-submit"   type="submit">Submit</input>          
+        </form>
+      </div>
+      
+      <div class="products-output">
+        <h4 id="output-items-title">Your items</h5>
+        <div class="input-field-container">
+          <input type="text" name="filter" id="filter" />
+          <label for="filter">Filter Products</label>
+        </div>
+        <div class="collection"></div>
+        
+        
+        <div class="btn-clear-position">
+        <a href="#" class="clear-items btn-black">Clear Products</a>
+        </div>
+      </div>
+    </div>
+    <div class="footer-position">
+      <footer class="footer">
+        Created by pedroYan 2020 | All rights reserved
+      </footer>
+    </div>
+    <script src="main11.js"></script>
+  </body>
+</html>

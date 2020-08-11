@@ -11,7 +11,7 @@ the Product is displayed in the space simulating the card product available in a
 PROBLEMS
 
 once we register the product and displayed in the space indicated, I wanted to use the LocalStorage to keep the product in the place simulating 
-a data base, but I couldn't do it properly. I just could to register the prduct name, but not the other informations of the card product as description, quantity, price, etc.
+a data base, but I couldn't do it properly. I couldn't add the feature of delete a single item by press the 'x' button.
 
 *I need to improve my css file to get a better look  in the app sample, I'll do as soon as I can! :D
 
@@ -22,6 +22,7 @@ FEATURES
 -Quantity
 -Price
 -submit Button
--Search Filter
--Delete Button (in the product card)
+-Delete Button (in the product card)***
 -Clear Button (clear all products)
+
+***Not working.

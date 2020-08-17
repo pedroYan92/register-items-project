@@ -1,139 +1,158 @@
-const form = document.querySelector('#items-form');
-const itemsList = document.querySelector('.collection');
-const clearBtn = document.querySelector('.clear-items');
-const filter = document.querySelector('#filter');
-const productName = document.querySelector('.input-product');
-const productDescription = document.querySelector('.area-description');
-const qttItem = document.querySelector('.input-qtt');
-const priceItem = document.querySelector('.input-price');
-
-// Clear Items event
-clearBtn.addEventListener('click', clearItems);
-// DOM Load event
-document.addEventListener('DOMContentLoaded', getItems);
-
-function templateItem(data) {
-  itemsList.insertAdjacentHTML(
-    'beforeend',
-    `
-  <div class="collection-item">
-  <a href="#" class="link-delete">
-    <i class="fa fa-remove"></i>
-  </a>
-  <div class="item-name">${data.productName}</div>
-  <div class="item-description">${data.productDescription}</div>
-  <div class="item-qtt">${data.qttItem}</div>
-  <div class="item-price">${data.priceItem}</div>
-  </div> 
-  `
-  );
+class Item {
+  constructor(productName, productDescription, qttItem, priceItem) {
+    this.productName = productName;
+    this.productDescription = productDescription;
+    this.qttItem = qttItem;
+    this.priceItem = priceItem;
+  }
 }
-// Get Items from LS
 
-function getItems() {
-  let items;
-  if (localStorage.getItem('items') === null) {
-    items = [];
-  } else {
-    items = JSON.parse(localStorage.getItem('items'));
+class UI {
+  addItemToList(item) {
+    const itemsList = document.querySelector('.collection');
+    // Create card element
+    const card = document.createElement('div');
+    // Add Class to card element
+    card.className = 'collection-item';
+    // Insert Cards
+    card.innerHTML = `
+        <a href="#" class="link-delete">
+        <i class="fa fa-remove"></i>
+        </a>
+        <div class="item-name">${item.productName}</div>
+        <div class="item-description">${item.productDescription}</div>
+        <div class="item-qtt">${item.qttItem}</div>
+        <div class="item-price">${item.priceItem}</div> 
+        `;
+
+    itemsList.appendChild(card);
+  }
+  showAlert(message, className) {
+    // Create div
+    const div = document.createElement('div');
+    // Add classses
+    div.className = `alert ${className}`;
+    // Add text
+    div.appendChild(document.createTextNode(message));
+    // Get parent
+    const mainContainer = document.querySelector('.main-container');
+    // Get collection
+    const container = document.querySelector('.container');
+    // Insert Alert
+    mainContainer.insertBefore(div, container); //element, variable with class selected
+
+    // Timeout after 3 sec
+    setTimeout(function () {
+      document.querySelector('.alert').remove();
+    }, 3000);
+  }
+  deleteItem(target) {
+    if (target.className === 'fa fa-remove') {
+      target.parentElement.parentElement.remove();
+    }
+  }
+  clearFields() {
+    document.querySelector('.input-product').value = '';
+    document.querySelector('.area-description').value = '';
+    document.querySelector('.input-qtt').value = null;
+    document.querySelector('.input-price').value = null;
+  }
+}
+
+// Local Storage Class
+
+class Store {
+  static getItems() {
+    let items;
+    if (localStorage.getItem('items') === null) {
+      items = [];
+    } else {
+      items = JSON.parse(localStorage.getItem('items'));
+    }
+
+    return items;
   }
 
-  items.forEach(function (
-    data = {
-      productName: productName.value,
-      productDescription: productDescription.value,
-      qttItem: qttItem.value,
-      priceItem: priceItem.value,
-    }
-  ) {
-    itemsList.insertAdjacentHTML(
-      'beforeend',
-      `
-    <div class="collection-item">
-    <a href="#" class="link-delete">
-      <i class="fa fa-remove"></i>
-    </a>
-    <div class="item-name">${data.productName}</div>
-    <div class="item-description">${data.productDescription}</div>
-    <div class="item-qtt">${data.qttItem}</div>
-    <div class="item-price">${data.priceItem}</div>
-    </div> 
-    `
-    );
-  });
+  static displayItems() {
+    const items = Store.getItems();
+
+    items.forEach((item) => {
+      const ui = new UI();
+
+      //Add item to UI
+      ui.addItemToList(item);
+    });
+  }
+
+  static addItem(item) {
+    const items = Store.getItems();
+
+    items.push(item);
+
+    localStorage.setItem('items', JSON.stringify(items));
+  }
+
+  static removeItem(productName) {
+    const items = Store.getItems();
+
+    items.forEach((item, index) => {
+      if (item.productName === productName) {
+        items.splice(index, 1);
+      }
+    });
+
+    localStorage.setItem('items', JSON.stringify(items));
+  }
 }
 
-function addItem(e) {
-  const data = {
-    productName: productName.value,
-    productDescription: productDescription.value,
-    qttItem: qttItem.value,
-    priceItem: priceItem.value,
-  };
+//DOM Load Event
+document.addEventListener('DOMContentLoaded', Store.displayItems);
+
+// Event Listeners
+document.querySelector('#items-form').addEventListener('submit', function (e) {
+  // Get form values
+  const productName = document.querySelector('.input-product').value,
+    productDescription = document.querySelector('.area-description').value,
+    qttItem = document.querySelector('.input-qtt').value,
+    priceItem = document.querySelector('.input-price').value;
+
+  // Instantiate Item
+  const item = new Item(productName, productDescription, qttItem, priceItem);
+
+  // Instantiate UI
+  const ui = new UI();
+
+  // Validate
+  if (
+    productName === '' ||
+    productDescription === '' ||
+    qttItem === '' ||
+    priceItem === ''
+  ) {
+    // Error Alert
+    ui.showAlert('Please fill in the fields', 'error');
+  } else {
+    // Add item to list
+    ui.addItemToList(item);
+    // Add item to localStorage
+    Store.addItem(item);
+
+    // Show success
+    ui.showAlert('Product Registered !', 'success');
+
+    // Clear Fields
+
+    ui.clearFields();
+  }
 
   e.preventDefault();
+});
 
-  templateItem(data);
+// Clear all Items
+const clearBtn = document.querySelector('.clear-items');
+const itemsList = document.querySelector('.collection');
 
-  productName.value = '';
-  productDescription.value = '';
-  qttItem.value = null;
-  priceItem.value = null;
-
-  storeItemInLocalStorage(data);
-}
-
-function storeItemInLocalStorage(item) {
-  let items;
-  if (localStorage.getItem('items') === null) {
-    items = [];
-  } else {
-    items = JSON.parse(localStorage.getItem('items'));
-  }
-  items.push(item);
-
-  localStorage.setItem('items', JSON.stringify(items));
-}
-
-form.addEventListener('submit', addItem, false);
-
-/* const saved = localStorage.getItem('item-collection');
-
-if (saved) {
-  itemsList.innerHTML = saved;
-} */
-
-itemsList.addEventListener('click', deleteItem);
-
-// Remove Item
-function deleteItem(e) {
-  if (e.target.parentElement.classList.contains('link-delete')) {
-    if (confirm('Are you sure?')) {
-      e.target.parentElement.parentElement.remove();
-
-      // Remove from LS
-      removeItemFromLocalStorage(e.target.parentElement.parentElement);
-    }
-  }
-}
-
-// Remove from Local Storage
-function removeItemFromLocalStorage(itemProduct) {
-  let items;
-  if (localStorage.getItem('items') === null) {
-    items = [];
-  } else {
-    items = JSON.parse(localStorage.getItem('items'));
-  }
-
-  items.forEach(function (item, index) {
-    if (itemProduct.textContent === item) {
-      item.splice(index, 1);
-    }
-  });
-
-  localStorage.setItem('items', JSON.stringify(items));
-}
+clearBtn.addEventListener('click', clearItems);
 
 // Clear Items
 function clearItems() {
@@ -152,3 +171,16 @@ function clearItems() {
 function clearItemsFromLocalStorage() {
   localStorage.clear();
 }
+
+// Event Listener for delete
+document.querySelector('.collection').addEventListener('click', function (e) {
+  // Instantiate UI
+  const ui = new UI();
+  // Delete item
+  ui.deleteItem(e.target);
+
+  // Remove from LS
+  Store.removeItem(e.target.parentElement.nextElementSibling.textContent);
+
+  e.preventDefault();
+});

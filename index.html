@@ -7,42 +7,29 @@
     <script src="https://kit.fontawesome.com/8d3cb51f30.js" crossorigin="anonymous"></script>
     <link rel="stylesheet" type="text/css" href="style.css" />
   </head>
-  <body>
-    <div class="title">Instant Products Register</div>
+  <body class="main-container">
+    <div class="title">Instant Product Register</div>
     <div class="container">
       <div class="side-form">
         <form class="content-form" id="items-form">
           <h4 class="title-form">Register products</h4>
           <label>Product name</label>
-          <input required class="input-product" type="text" />
+          <input class="input-product" type="text" />
           <label>Product description</label>
-          <textarea required class="area-description"></textarea>
+          <textarea class="area-description"></textarea>
           <label>Quantity</label>
-          <input required class="input-qtt" type="number" />
+          <input class="input-qtt" type="number" />
           <label>Price</label>
-          <input required class="input-price" type="number" />
-          
-            <input class="btn-submit" type="submit"></input>
-                   
+          <input class="input-price" type="number" />
+          <input class="btn-submit" type="submit"></input>
         </form>
       </div>
       
       <div class="products-output">
-        <h4 id="output-items-title">Your products</h5>
-       
-        <div class="collection">
-          <div class="collection-item">
-            <!-- //<img class="item-img" alt="image base" width="42" height="42" -->
-            <div class="item-name">Product base</div>
-            <div class="item-description">description base</div>
-            <div class="item-qtt">Quantity base</div>
-            <div class="item-price">Price base</div>
-            </div> 
-        </div>
-        
-        
+        <h3 id="output-items-title">Your Products</h3>
+        <div class="collection"></div>
         <div class="btn-clear-position">
-        <a href="#" class="clear-items btn-black">Clear Products</a>
+          <a href="#" class="clear-items btn-black">Clear Products</a>
         </div>
       </div>
     </div>

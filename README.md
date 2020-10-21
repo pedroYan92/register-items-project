@@ -1,4 +1,4 @@
-# register-items-project
+# Instant Product Register App
 
 A simple project with vanilla javascript to register products through a input form.
 

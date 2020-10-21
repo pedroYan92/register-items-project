@@ -17,12 +17,13 @@ class UI {
     // Insert Cards
     card.innerHTML = `
         <a href="#" class="link-delete">
-        <i class="fa fa-remove"></i>
+          <i class="fa fa-remove"></i>
         </a>
+        <img class="item-img" src="https://via.placeholder.com/190x150/" alt="">
         <div class="item-name">${item.productName}</div>
         <div class="item-description">${item.productDescription}</div>
-        <div class="item-qtt">${item.qttItem}</div>
-        <div class="item-price">${item.priceItem}</div> 
+        <div class="item-qtt"><span class="label-qtt">Quantity: </span>${item.qttItem}</div>
+        <div class="item-price"><span class="label-price">Price: $</span>${item.priceItem}</div> 
         `;
 
     itemsList.appendChild(card);
